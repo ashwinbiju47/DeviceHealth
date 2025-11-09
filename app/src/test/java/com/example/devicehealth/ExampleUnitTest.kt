@@ -1,4 +1,4 @@
-package com.example.DeviceHealth
+package com.example.devicehealth
 
 import org.junit.Test
 
