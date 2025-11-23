@@ -17,6 +17,8 @@ private val MatrixDarkColorScheme = darkColorScheme(
     onSecondary = MatrixOnPrimary,
     onBackground = MatrixOnBackground,
     onSurface = MatrixOnBackground,
+    surfaceVariant = MatrixSurface, // Ensure variants also use the dark surface
+    onSurfaceVariant = MatrixGreen, // Ensure text on variants is green
     error = MatrixError
 )
 
