@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import com.example.devicehealth.data.local.User
+import com.example.devicehealth.ui.home.components.BatteryInsightsCard
 import com.example.devicehealth.ui.home.components.SystemVitalsCard
 import com.example.devicehealth.ui.home.components.TipsCard
 
@@ -20,7 +22,8 @@ import com.example.devicehealth.ui.home.components.TipsCard
 @Composable
 fun HomeScreen(
     user: User,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onNavigateToSensors: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -59,9 +62,16 @@ fun HomeScreen(
             // System Vitals Card
             SystemVitalsCard()
 
-            // Logout button
+            // Battery Insights Card
+            val context = LocalContext.current
+            val batteryViewModel: BatteryInfoViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+                factory = BatteryInfoViewModelFactory(context)
+            )
+            BatteryInsightsCard(viewModel = batteryViewModel)
+
+            // Sensors Button
             OutlinedButton(
-                onClick = onLogout,
+                onClick = onNavigateToSensors,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
@@ -69,6 +79,21 @@ fun HomeScreen(
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text("Sensors Data")
+            }
+
+            // Logout button
+            OutlinedButton(
+                onClick = onLogout,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error), // Changed to error color for distinction
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
                 )
             ) {
                 Text("Logout")

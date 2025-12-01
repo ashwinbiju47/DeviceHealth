@@ -41,17 +41,30 @@ fun AppRoot() {
         SplashScreen()
     }
 
+
     if (!showSplash) {
         if (loggedInUser == null) {
             AuthScreen(onAuthSuccess = { loggedInUser = it })
         } else {
-            HomeScreen(
-                user = loggedInUser!!,
-                onLogout = {
-                    viewModel.logout()
-                    loggedInUser = null
+            var currentScreen by remember { mutableStateOf("home") }
+
+            when (currentScreen) {
+                "home" -> {
+                    HomeScreen(
+                        user = loggedInUser!!,
+                        onLogout = {
+                            viewModel.logout()
+                            loggedInUser = null
+                        },
+                        onNavigateToSensors = { currentScreen = "sensors" }
+                    )
                 }
-            )
+                "sensors" -> {
+                    com.example.devicehealth.ui.sensors.SensorDataScreen(
+                        onBack = { currentScreen = "home" }
+                    )
+                }
+            }
         }
     }
 }
